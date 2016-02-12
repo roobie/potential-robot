@@ -4,7 +4,10 @@ import areas.SimpleArea;
 import com.haxepunk.Entity;
 import com.haxepunk.Scene;
 import com.haxepunk.HXP;
+import com.haxepunk.graphics.Backdrop;
 import entities.Grass;
+import entities.Actor;
+import util.Pos;
 import logic.AI;
 import logic.SimpleAI;
 import tink.concurrent.Thread;
@@ -42,15 +45,18 @@ class GameScene extends Scene
 
 		trace(middleX, middleY);
 
-		var entityCount = 1024;
+		//var entityCount = 1024;
 		//var entityCount = 2048;
+		var entityCount = 24;
 		for (i in 0...entityCount) {
-			var b = new Grass(middleX, middleY);
+			//var b = new Grass(middleX, middleY);
+			var b = new Actor(new Pos(middleX, middleY));
 			var ai = new SimpleAI(b);
 			this.actors.push(ai);
 			add(b);
 		}
 
+		//addGraphic(new Backdrop("graphics/bd_1.png"));
 
 	}
 
@@ -61,7 +67,7 @@ class GameScene extends Scene
 		}
 	}
 
-	var bgFrameRate:Float = 1/25;
+	var bgFrameRate:Float = 1/20;
 	function updateSliceOfActors(ais:Array<AI>):Void {
 		Sys.sleep(bgFrameRate);
 		for (a in ais) {
