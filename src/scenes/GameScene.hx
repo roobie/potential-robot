@@ -1,15 +1,17 @@
 package scenes;
 
-import areas.SimpleArea;
 import com.haxepunk.Entity;
 import com.haxepunk.Scene;
 import com.haxepunk.HXP;
 import com.haxepunk.graphics.Backdrop;
+
+import areas.SimpleArea;
 import entities.Grass;
 import entities.Actor;
-import util.Pos;
 import logic.AI;
 import logic.SimpleAI;
+import util.Pos;
+
 import tink.concurrent.Thread;
 import tink.concurrent.Mutex;
 import tink.concurrent.Queue;
@@ -61,7 +63,9 @@ class GameScene extends Scene
 	}
 
 	function updateActors():Void {
+#if concurrent
 		Sys.sleep(.1);
+#end
 		for (a in actors) {
 			a.tick();
 		}
@@ -69,7 +73,9 @@ class GameScene extends Scene
 
 	var bgFrameRate:Float = 1/20;
 	function updateSliceOfActors(ais:Array<AI>):Void {
+#if concurrent
 		Sys.sleep(bgFrameRate);
+#end
 		for (a in ais) {
 			a.tick();
 		}
@@ -77,7 +83,6 @@ class GameScene extends Scene
 
 	override public function update() {
 #if concurrent
-
 		// new Thread(function () {
 		// 	if (m.tryAcquire()) {
 		// 		updateActors();
