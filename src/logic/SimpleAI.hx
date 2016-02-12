@@ -1,5 +1,8 @@
 package logic;
+
 import com.haxepunk.Entity;
+
+import util.Rand;
 
 /**
  * ...
@@ -17,7 +20,8 @@ class SimpleAI implements AI{
 	/* INTERFACE logic.AI */
 
 	public function tick():Void {
-		e.moveBy(1, 1);
+		if (Math.random() < 0.5) { return; }
+		e.moveBy(Rand.randInt(-2, 3), Rand.randInt(-2, 3));
 	}
 
 }

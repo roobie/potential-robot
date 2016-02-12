@@ -1,8 +1,8 @@
 package logic;
 
 import tink.core.*;
-import tink.RunLoop;
-import tink.runloop.Worker;
+//import tink.RunLoop;
+//import tink.runloop.Worker;
 
 /**
  * ...
@@ -15,15 +15,15 @@ class LogicLoop {
 
 	}
 
-	public static function compute(ais:List<AI>, worker:Worker) {
+	// public static function compute(ais:List<AI>, worker:Worker) {
 
-		for (ai in ais) {
-			worker.work(function () {
-				ai.tick();
-			});
-		}
+	// 	for (ai in ais) {
+	// 		worker.work(function () {
+	// 			ai.tick();
+	// 		});
+	// 	}
 
-		return RunLoop.current.delegate(Noise, worker);
-	}
+	// 	return RunLoop.current.delegate(Noise, worker);
+	// }
 
 }

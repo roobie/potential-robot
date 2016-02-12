@@ -6,29 +6,30 @@ import com.haxepunk.Scene;
 import com.haxepunk.HXP;
 import entities.Grass;
 import logic.AI;
-import logic.LogicLoop;
 import logic.SimpleAI;
-import tink.RunLoop;
-import tink.runloop.Worker;
 import tink.concurrent.Thread;
 import tink.concurrent.Mutex;
 import tink.concurrent.Queue;
 
+using util.Arrays;
 
 class GameScene extends Scene
 {
 
 	var actors:Array<AI> = new Array<AI>();
 
-	//var threads:Array<Thread> = null;
-
 	var m:Mutex = new Mutex();
-	//var q:Queue = new Queue();
+
+	var partCount:Int = 2;
+	var mx:Array<Mutex> = [];
 
 	public function new()
 	{
 		super();
 
+		for (i in 0...partCount) {
+			mx.push(new Mutex());
+		}
 	}
 
 	public override function begin()
@@ -36,11 +37,15 @@ class GameScene extends Scene
 		addGraphic(new SimpleArea());
 
 
-		var width = Math.floor(HXP.stage.width / 2);
-		var height = Math.floor(HXP.stage.height / 2);
+		var middleX = Math.floor(HXP.stage.width / 2);
+		var middleY = Math.floor(HXP.stage.height / 2);
 
-		for (i in 0...2048) {
-			var b = new Grass(320, 240);
+		trace(middleX, middleY);
+
+		var entityCount = 1024;
+		//var entityCount = 2048;
+		for (i in 0...entityCount) {
+			var b = new Grass(middleX, middleY);
 			var ai = new SimpleAI(b);
 			this.actors.push(ai);
 			add(b);
@@ -50,21 +55,44 @@ class GameScene extends Scene
 	}
 
 	function updateActors():Void {
+		Sys.sleep(.1);
 		for (a in actors) {
 			a.tick();
 		}
 	}
 
-	override public function update() {
+	var bgFrameRate:Float = 1/25;
+	function updateSliceOfActors(ais:Array<AI>):Void {
+		Sys.sleep(bgFrameRate);
+		for (a in ais) {
+			a.tick();
+		}
+	}
 
-		#if concurrent
-		new Thread(function () {
-			if (m.tryAcquire()) {
-				updateActors();
-				m.release();
-			}
-		});
-		#end
+	override public function update() {
+#if concurrent
+
+		// new Thread(function () {
+		// 	if (m.tryAcquire()) {
+		// 		updateActors();
+		// 		m.release();
+		// 	}
+		// });
+
+		var parts = actors.partition(partCount);
+		for (p in 0...parts.length) {
+			var m = mx[p];
+			new Thread(function () {
+				if (m.tryAcquire()) {
+					updateSliceOfActors(parts[p]);
+					m.release();
+				}
+			});
+		}
+
+#else
+		updateActors();
+#end
 
 		super.update();
 	}

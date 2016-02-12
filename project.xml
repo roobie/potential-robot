@@ -9,16 +9,15 @@
 	<app main="Main" file="mrbob" path="bin" />
 
 	<window fps="60" background="0x333333" />
-	<window width="1024" height="768" resizable="true" unless="mobile" />
+	<window width="800" height="640" resizable="false" unless="mobile" />
 	<window fullscreen="true" if="mobile" />
 	<window orientation="landscape" vsync="true" antialiasing="0" if="cpp" />
 
 	<source path="src" />
 
 	<haxelib name="HaxePunk" />
-	<haxelib name="tink_runloop" />
 	<haxelib name="tink_concurrent" />
-	<haxelib name="golems" />
+	<haxelib name="mconsole" />
 
 	<assets path="assets/graphics" rename="graphics" include="*.png|*.jpg" />
 	<assets path="assets/audio" rename="audio" include="*.mp3" if="flash" />

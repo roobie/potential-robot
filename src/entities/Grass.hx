@@ -5,6 +5,8 @@ import com.haxepunk.Graphic;
 import com.haxepunk.Mask;
 import com.haxepunk.graphics.Image;
 
+import util.Rand;
+
 /**
  * ...
  * @author Bjorn
@@ -24,13 +26,10 @@ class Grass extends Entity {
 		super(x, y, graphic/*, mask*/);
 	}
 
-	function randInt(min:Int, max:Int): Int {
-		return 0 + min + (Math.floor(Math.random() * (Math.floor(Math.abs(min)) + max)));
-	}
 	public override function update()
 	{
 		//if (Math.random() < 0.8) { return; }
-		//moveBy(randInt(-2, 3), randInt(-2, 3));
+		//moveBy(Rand.randInt(-2, 3), Rand.randInt(-2, 3));
 		super.update();
 	}
 }
